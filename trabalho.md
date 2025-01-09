@@ -54,6 +54,32 @@ Nos pacotes http os dados são transmitidos em texto claro e é possivel ver os 
 
 Por outro lado, em pacotes https onde os dados são criptografados usando TLS a unica informação que aparece é o handshake (processo de negociação entre o cliente e o servidor para estabelecer uma conexão segura)
 
+# Análise e Configuração de Protocolos Seguros
+
+### Analisar comunicação com Telnet e SSH
+
+**Telnet**
+![Telnet](telnet.png)
+
+**SSH**
+![SSH](ssh.jpg)
+
+**Comparação:**
+
+**Telnet:**
+- O Telnet mostra pacotes com dados não criptografados, descritos como "55 bytes data", "60 bytes data", etc.
+- Isso significa que as informações trocadas via Telnet podem ser facilmente interceptadas e lidas, já que não há nenhum mecanismo de criptografia envolvido.
+
+**SSH:**
+- Os pacotes capturados no SSH estão criptografados, como indicado pelos "Encrypted packet" no log.
+- Os logs também mencionam elementos como "Key Exchange Init" e "Elliptic Curve Diffie-Hellman", o que demonstra que o protocolo realiza trocas de chaves seguras para estabelecer a comunicação.
+- Além disso, os pacotes apresentam mensagens como "Malformed Packet", que podem indicar erros de comunicação ou dados inesperados.
+
+**Diferenças:**
+- SSH utiliza criptografia para proteger os dados, enquanto Telnet transmite os dados em texto puro, tornando-os vulneráveis a ataques.
+- Ambos são usados para acessar servidores remotamente, mas o SSH é uma melhor escolha em ambientes que exigem segurança
+- Enqunato o SSH utiliza métodos de autenticação seguros, como chaves públicas/privadas (RSA, DSA, ECDSA) e senhas criptografadas. O Telnet, por outro lado, usa autenticação baseada em texto puro. Isso significa que as credenciais (usuário e senha) são enviadas sem qualquer criptografia, tornando-as facilmente acessíveis para invasores que estejam monitorando a rede.
+
 # Estudo de Redes e Endereçamento IP
 
 ### Identificar IP publico e privado
@@ -83,4 +109,36 @@ Já o endereço **172.217.143.10** é público. Ele não pertence a nenhum dos i
 - Nos pacotes IPv6, os endereços de origem e destino são endereços IPv6 no formato hexadecimal (ex.: **fe80::da33:b7ff:fec8:d4a6** e **ff02::1**). Enquanto nos pacotes ipv4 os endereços estão no formato decimal(ex.: **142.250.78.228** e **192.168.0.6**)
 - O pacote IPv6 usa **ICMPv6** para enviar uma mensagem de Router Advertisement. Este é um tipo específico de mensagem ICMP no IPv6, utilizado para a descoberta de roteadores na rede. Enquanto os pacotes IPv4 usam **QUIC**, que é um protocolo de transporte desenvolvido pelo Google, focado em fornecer conexões seguras e de baixa latência, geralmente usado para serviços como Google Chrome e YouTube.
 - O pacote IPv6 não especifica diretamente qual protocolo de transporte foi usado, mas é provável que utilize o **UDP** por ser uma mensagem **ICMPv6**. Enquanto o pacote IPv4 usa **QUIC**, que está em uma camada de transporte superior (similar ao **TCP/UDP**), mas é projetado para ser mais rápido e eficiente em conexões seguras.
+
+### Estudar sobre NAT(Network Address Translation)
+
+**NAT (Network Address Translation)** é uma técnica usada em redes para traduzir endereços IP privados (que não podem ser roteados na internet pública) para um endereço IP público. Essa tradução permite que dispositivos em uma rede local (LAN) se comuniquem com a internet e vice-versa.
+
+- Com o IPv4, o número de IPs públicos é limitado. O NAT permite que múltiplos dispositivos compartilhem um único endereço IP público.
+- Dispositivos com IPs privados não podem ser acessados diretamente pela internet, o que reduz o risco de ataques externos.
+- Facilita o uso de IPs privados reutilizáveis em redes locais.
+
+**Como funciona:**
+1. Quando um dispositivo da LAN (por exemplo, com IP privado `192.168.0.10`) faz uma requisição para acessar a internet, o roteador:
+   - Substitui o IP de origem (`192.168.0.10`) pelo seu IP público (exemplo: `203.0.113.1`).
+   - Adiciona informações sobre essa tradução em uma tabela NAT para rastrear as conexões.
+2. Quando o servidor na internet responde, o roteador consulta sua tabela NAT:
+   - Identifica qual dispositivo da LAN deve receber a resposta.
+   - Substitui o IP de destino (IP público) pelo IP privado correspondente e entrega o pacote.
+
+**Tipos de NAT:**
+- **NAT Estático**:
+   - Cada endereço IP privado é mapeado para um IP público específico.
+   - Usado quando é necessário acesso direto a um dispositivo interno (por exemplo, servidores internos).
+
+- **NAT Dinâmico**:
+   - Um grupo de endereços IP públicos é compartilhado entre múltiplos dispositivos.
+   - Útil quando há poucos IPs públicos disponíveis.
+
+- **PAT (Port Address Translation)**:
+   - Também conhecido como **NAT Overload**.
+   - Permite que vários dispositivos compartilhem o mesmo IP público, diferenciando as conexões pelas portas TCP/UDP.
+   - É o tipo mais comum em redes domésticas e empresariais.
+
+
     
