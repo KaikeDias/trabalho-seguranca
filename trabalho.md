@@ -1,6 +1,6 @@
 # Captura e analise de pacotes
 
-### Estudar os pactoes capturados com o wireshark
+### Estudar os pacotes capturados com o wireshark
 ![Pacotes capturados](pacotes_capturados.png)
 
 #### Pacotes: 1, 2, 10, 11, 12, 16, 17, 18
