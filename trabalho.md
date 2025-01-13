@@ -82,7 +82,7 @@ Por outro lado, em pacotes https onde os dados são criptografados usando TLS a 
 **Diferenças:**
 - SSH utiliza criptografia para proteger os dados, enquanto Telnet transmite os dados em texto puro, tornando-os vulneráveis a ataques.
 - Ambos são usados para acessar servidores remotamente, mas o SSH é uma melhor escolha em ambientes que exigem segurança
-- Enqunato o SSH utiliza métodos de autenticação seguros, como chaves públicas/privadas (RSA, DSA, ECDSA) e senhas criptografadas. O Telnet, por outro lado, usa autenticação baseada em texto puro. Isso significa que as credenciais (usuário e senha) são enviadas sem qualquer criptografia, tornando-as facilmente acessíveis para invasores que estejam monitorando a rede.
+- Enquanto o SSH utiliza métodos de autenticação seguros, como chaves públicas/privadas (RSA, DSA, ECDSA) e senhas criptografadas. O Telnet, por outro lado, usa autenticação baseada em texto puro. Isso significa que as credenciais (usuário e senha) são enviadas sem qualquer criptografia, tornando-as facilmente acessíveis para invasores que estejam monitorando a rede.
 
 # Estudo de Redes e Endereçamento IP
 
